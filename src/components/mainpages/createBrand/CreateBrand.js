@@ -8,12 +8,14 @@ import './createBrand.css'
 
 const initialState = {
     name: '',
-    _id: ''
+    _id: '',
+    category: '',
 }
 
 function CreateBrand() {
     const state = useContext(GlobalState)
     const [brand, setBrand] = useState(initialState)
+    const [categories] = state.categoriesAPI.categories
     const [images, setImages] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -142,6 +144,20 @@ function CreateBrand() {
                                     <label for="brand_name" className="account-form__label">Brand name</label>
                                     <input tabindex="1" type="text" className="account-form__form-control js-inputBrandName" id="name" name="name" placeholder="For example: Nike, Tesla or Facebook" value={brand.name} onChange={handleChangeInput}
                                         required="required"/>
+                                </div>
+
+                                <div className='account-form__form-group'>
+                                    <label for="brand_name" className="account-form__label">Category</label>
+                                    <select className="account-form__form-control js-inputBrandName" name="category" value={brand.category} onChange={handleChangeInput} >
+                                        <option value="">Please select a category</option>
+                                        {
+                                            categories.map(category => (
+                                                <option value={category._id} key={category._id}>
+                                                    {category.name}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
                                 </div>
                                 
                                 <div className="account-form__form-group account-form__form-group--last">

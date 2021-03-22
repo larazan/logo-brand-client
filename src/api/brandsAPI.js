@@ -4,6 +4,7 @@ import axios from 'axios';
 function BrandsAPI() {
     const [brands, setBrands] = useState([]);
     const [callback, setCallback] = useState(false);
+    const [category, setCategory] = useState('')
     const [sort, setSort] = useState('');
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
@@ -11,16 +12,17 @@ function BrandsAPI() {
     
     useEffect(() => {
         const getBrands = async () => {
-            const res = await axios.get(`/api/brands?limit=${page*9}&${sort}&name[regex]=${search}`)
+            const res = await axios.get(`/api/brands?limit=${page*9}&${category}&${sort}&name[regex]=${search}`)
             setBrands(res.data.brands)
             setResult(res.data.result)
         }
         getBrands()
-    }, [callback, sort, search, page]);
+    }, [callback, category, sort, search, page]);
 
     return {
         brands: [brands, setBrands],
         callback: [callback, setCallback],
+        category: [category, setCategory],
         sort: [sort, setSort],
         search: [search, setSearch],
         page: [page, setPage],

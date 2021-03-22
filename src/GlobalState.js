@@ -1,10 +1,15 @@
 import React, {createContext, useState, useEffect} from 'react';
 import BrandsAPI from './api/brandsAPI';
+import CategoriesAPI from './api/categoriesAPI'
+
 
 export const GlobalState = createContext();
 
 export const DataProvider = ({children}) => {
-    const state = { brandsAPI: BrandsAPI() }
+    const state = { 
+        brandsAPI: BrandsAPI(),
+        categoriesAPI: CategoriesAPI()
+    }
 
     console.log(state);
     

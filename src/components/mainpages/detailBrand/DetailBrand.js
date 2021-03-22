@@ -11,6 +11,7 @@ function DetailProduct() {
     const params = useParams()
     const state = useContext(GlobalState)
     const [brands] = state.brandsAPI.brands
+    const [categories] = state.categoriesAPI.categories
     const [detailBrand, setDetailBrand] = useState([])
     const [callback, setCallback] = state.brandsAPI.callback
     const [loading, setLoading] = useState(false)
@@ -32,7 +33,24 @@ function DetailProduct() {
         } catch (err) {
             alert(err.response.data.msg)
         }
+    }         
+
+    const handleDownload = (url, filename) => {
+        axios.get(url, {
+            responseType: 'blob'
+        })
+        .then((response) => {
+            // fileDownload(res.data, filename)
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${filename}.svg`); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+        })
     }
+
+    console.log(categories);
 
     useEffect(() =>{
         if(params.id){
@@ -58,7 +76,15 @@ function DetailProduct() {
                         <img className="larger" src={detailBrand.images.url} alt="" />
                     </div>
                     <div className="center">
-                        <a id="download" className="button margin" target="_blank" href="https://worldvectorlogo.com/download/adidas-8.svg" rel="nofollow" data-redirect="https://worldvectorlogo.com/downloaded/adidas-8">
+                        <a 
+                            id="download" 
+                            className="button margin" 
+                            target="_blank" 
+                            href={detailBrand.images.url} 
+                            rel="nofollow" 
+                            data-redirect={detailBrand.images.url} 
+                            // onClick={handleDownload(detailBrand.images.url, detailBrand.name)}
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14">
                                 <g stroke="#fff" fill="none" stroke-width="2" stroke-miterlimit="10">
                                     <path d="M11,5L6,9,1,5"></path>
@@ -68,32 +94,27 @@ function DetailProduct() {
                             </svg> Download SVG
                         </a>
                         <p className="terms">
-                            By downloading adidas vector logo you agree with our <a href="https://worldvectorlogo.com/terms-of-use">terms of use</a>.
+                            By downloading {detailBrand.name} vector logo you agree with our <a href="https://worldvectorlogo.com/terms-of-use">terms of use</a>.
                         </p>
                     </div>
                     <div className="meta__container">
                         <ul className="meta__tags">
+                            <li class="meta__tag">
+                                category
+                            </li>
+                            {
+                                detailBrand.category &&
+                                <li className="meta__tags">
+                                    <a class="meta__tag-link" href="">
+                                        {
+                                            categories.map(cat => {
+                                                if (cat._id === detailBrand.category) return cat.name
+                                            })
+                                        }
+                                    </a>
+                                </li>
+                            }
                             
-                            <li className="meta__tag">
-                                <Link to={`/edit/${detailBrand._id}`}>
-                                <a className="button" rel="nofollow">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    Edit Logo
-                                </a>
-                                </Link>
-                            </li>
-                            <li className="meta__tag">
-                                
-                                <div className="button button--error" rel="nofollow" onClick={() =>deleteBrand(detailBrand._id, detailBrand.images.public_id)}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    Delete Logo
-                                </div>
-                                
-                            </li>
                         </ul>
                         <div className="meta__profile-overview">
                             <div className="profile-overview__container">
@@ -105,13 +126,37 @@ function DetailProduct() {
                                 </a>
                                 <div className="profile-overview__name-rank">
                                     <a className="profile-overview__name" href="https://worldvectorlogo.com/profile/benoit-contardo">
-                                        administrator
+                                        Administrator
                                     </a>
                                 </div>
                             </div>
                         </div>
                         <div className="meta__downloads">
-                            <span className="meta__downloads-value">2,244</span> times downloaded
+                            <ul className="meta__tags">
+                                
+                                <li className="meta__tag">
+                                    <Link to={`/edit/${detailBrand._id}`}>
+                                    <a className="button" rel="nofollow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                        Edit Logo
+                                    </a>
+                                    </Link>
+                                </li>
+                                <li className="meta__tag">
+                                    
+                                    <div className="button button--error" rel="nofollow" onClick={() =>deleteBrand(detailBrand._id, detailBrand.images.public_id)}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Delete Logo
+                                    </div>
+                                    
+                                </li>
+                               
+                            </ul>
+                            
                         </div>
                     </div>
                 </div>
