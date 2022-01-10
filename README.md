@@ -1,6 +1,6 @@
 # Brands Logo vector 
 
-A Lists of all motivational quotes, riddle, poetry, motivational speech from all over the world built with React, Redux, tailwind (client side). 
+A Lists of all brand logo vector format (client side). 
 
 ## Features
 
