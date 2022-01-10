@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import {GlobalState} from '../../../GlobalState'
 
+
 const Search = () => {
     const state = useContext(GlobalState)
     const [search, setSearch] = state.brandsAPI.search
@@ -21,6 +22,7 @@ const Search = () => {
                         </div>
                     </div>
                 </div>
+                
             </section>
         </>
     )

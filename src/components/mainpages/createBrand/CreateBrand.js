@@ -3,6 +3,7 @@ import axios from 'axios'
 import {GlobalState} from '../../../GlobalState'
 import Loading from '../utils/loading/Loading'
 import {useHistory, useParams} from 'react-router-dom'
+import TagsInput from '../../tagsInput'
 
 import './createBrand.css'
 
@@ -18,6 +19,8 @@ function CreateBrand() {
     const [categories] = state.categoriesAPI.categories
     const [images, setImages] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [tags, setTags] = useState([]);
+    const [errors, setErrors] = useState({});
 
     const history = useHistory()
     const param = useParams()
@@ -49,7 +52,7 @@ function CreateBrand() {
             
             if(!file) return alert("File not exist.")
 
-            if(file.size > 1024 * 1024) // 1mb
+            if(file.size > 5024 * 5024) // 1mb
                 return alert("Size too large!")
 
             if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/svg+xml') // 1mb
@@ -92,9 +95,9 @@ function CreateBrand() {
             if(!images) return alert("No Image Upload")
 
             if(onEdit){
-                await axios.put(`/api/brands/${brand._id}`, {...brand, images})
+                await axios.put(`/api/brands/${brand._id}`, {...brand, images, tags})
             }else{
-                await axios.post('/api/brands', {...brand, images})
+                await axios.post('/api/brands', {...brand, images, tags})
             }
             setCallback(!callback)
             history.push("/")
@@ -103,6 +106,22 @@ function CreateBrand() {
         }
     }
 
+    const changeHandler = (name, value) => {
+        if(name === 'tags') {
+          setTags(value);
+          if(value.length > 0 && errors.tags) {
+            setErrors(prev => {
+              const prevErrors = {...prev};
+              delete prevErrors.tags;
+              return prevErrors;
+            });
+          }
+        }
+      }
+
+    // console.log(tags);
+    // console.log(brand.tags);
+    
     const styleUpload = {
         display: images ? "block" : "none"
     }
@@ -141,13 +160,13 @@ function CreateBrand() {
                                 </div>
                                 <input className="js-inputLogoId" type="hidden" name="logo_id" />
                                 <div className="account-form__form-group">
-                                    <label for="brand_name" className="account-form__label">Brand name</label>
-                                    <input tabindex="1" type="text" className="account-form__form-control js-inputBrandName" id="name" name="name" placeholder="For example: Nike, Tesla or Facebook" value={brand.name} onChange={handleChangeInput}
+                                    <label htmlFor="brand_name" className="account-form__label">Brand name</label>
+                                    <input tabIndex="1" type="text" className="account-form__form-control js-inputBrandName" id="name" name="name" placeholder="For example: Nike, Tesla or Facebook" value={brand.name} onChange={handleChangeInput}
                                         required="required"/>
                                 </div>
 
                                 <div className='account-form__form-group'>
-                                    <label for="brand_name" className="account-form__label">Category</label>
+                                    <label htmlFor="brand_name" className="account-form__label">Category</label>
                                     <select className="account-form__form-control js-inputBrandName" name="category" value={brand.category} onChange={handleChangeInput} >
                                         <option value="">Please select a category</option>
                                         {
@@ -158,6 +177,18 @@ function CreateBrand() {
                                             ))
                                         }
                                     </select>
+                                </div>
+
+                                <div className='account-form__form-group'>
+                                <TagsInput 
+                                    label="Tags"
+                                    id="tags"
+                                    name="tags"
+                                    placeholder="Add tag"
+                                    onChange={changeHandler}
+                                    error={errors.tags}
+                                    defaultTags={brand.tags}
+                                />
                                 </div>
                                 
                                 <div className="account-form__form-group account-form__form-group--last">

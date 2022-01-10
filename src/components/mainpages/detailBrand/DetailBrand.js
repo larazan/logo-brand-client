@@ -6,12 +6,12 @@ import Search from '../search/Search';
 import Item from '../utils/brandItem/Item';
 import axios from 'axios'
 
-
 function DetailProduct() {
     const params = useParams()
     const state = useContext(GlobalState)
     const [brands] = state.brandsAPI.brands
     const [categories] = state.categoriesAPI.categories
+    const [text] = state.searchAPI.text
     const [detailBrand, setDetailBrand] = useState([])
     const [callback, setCallback] = state.brandsAPI.callback
     const [loading, setLoading] = useState(false)
@@ -55,11 +55,11 @@ function DetailProduct() {
     useEffect(() =>{
         if(params.id){
 
-            brands.forEach(brand => {
+            text.forEach(brand => {
                 if(brand._id === params.id) setDetailBrand(brand)
             })
         }
-    },[params.id, brands])
+    },[params.id, text])
 
     if(detailBrand.length === 0) return null;
 

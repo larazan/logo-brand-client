@@ -85,3 +85,50 @@
     letter-spacing: 2px;
     font-weight: 700;
 }
+
+.tags-input {
+    margin-bottom: 15px;
+}
+.tags-input.active .tags-input__wrapper {
+    border-color: #222;
+}
+.tags-input label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+.tags-input__wrapper {
+    border: 1px solid #e1e1e1;
+    padding: 15px 15px 10px;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+.tags-input__tags {
+    display: flex;
+    flex-wrap: wrap;
+}
+.tags-input__tags .tag {
+    background-color: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s ease;
+}
+.tags-input__tags .tag i {
+    margin-left: 5px;
+    cursor: pointer;
+    margin-top: 4px;
+}
+.tags-input__tags .tag:hover {
+    background-color: #d8d8d8;
+}
+.tags-input__tags input {
+    border: 0;
+    outline: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    flex: 1;
+    min-width: 80px;
+}

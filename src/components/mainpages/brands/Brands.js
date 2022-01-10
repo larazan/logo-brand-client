@@ -6,6 +6,7 @@ import Loading from '../utils/loading/Loading'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import LoadMore from './LoadMore'
+import AutoComplete from '../AutoComplete'
 
 
 function Brands() {
@@ -55,7 +56,9 @@ function Brands() {
     if(loading) return <div><Loading /></div>
     return (
         <>
-        <Search />
+        {/* <Search /> */}
+
+        <AutoComplete />
 
         <div className="top-waldo top-waldo--gray">
             <div id="snhb-worldvectorlogo_top-0"></div>

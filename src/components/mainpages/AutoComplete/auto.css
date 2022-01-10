@@ -1,0 +1,35 @@
+.search-result {
+    position: absolute;
+    top: 52px;
+    width: 100%;
+    max-height: 350px;
+    overflow-y: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
+}
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item.active,
+.list-group-item:hover {
+    background-color: #e1e3e5;
+    border-color: #d3d5d7;
+}
+a.res-sug {
+    text-decoration: none;
+    color: #38393b;
+    font-size: 12px;
+}
+.res-sug {
+    text-transform: uppercase;
+    
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.img-brand img {
+    width: 25px;
+}
